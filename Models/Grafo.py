@@ -1,5 +1,5 @@
-from Arista import *
-from Vertice import *
+from Models.Arista import *
+from Models.Vertice import *
 from copy import *
 
 
@@ -12,6 +12,13 @@ class Grafo:
         self.adyacencias = {}
         self.vistadosCKruskal = []
         self.repetidos = 0
+        self.listaAristasB = []
+
+    def getListaVertices(self):
+        list = []
+        for i in self.listaVertices:
+            list.append(i.dato)
+        return list
 
     def ingresarVertices(self, vertice):
         if not self.verificarExisteV(vertice, self.listaVertices):
@@ -30,13 +37,34 @@ class Grafo:
         if not self.verificarExisteA(origen, destino, self.listaAristas):
             if self.verificarExisteV(origen, self.listaVertices) and self.verificarExisteV(destino, self.listaVertices):
                 self.listaAristas.append(Arista(origen, destino, peso))
-                self.obtenerOrigen(origen).listaAdyacentes.append(destino)
-                self.obtenerOrigen(destino).listaAdyacentes.append(origen)
+                if not destino in self.obtenerOrigen(origen).listaAdyacentes:
+                    self.obtenerOrigen(origen).listaAdyacentes.append(destino)
+                if not origen in self.obtenerOrigen(destino).listaAdyacentes:
+                    self.obtenerOrigen(destino).listaAdyacentes.append(origen)
 
     def obtenerOrigen(self, origen):
         for i in range(len(self.listaVertices)):
             if origen == self.listaVertices[i].getDato():
                 return self.listaVertices[i]
+
+    def obtenerArista(self, origen, destino):
+        list = []
+        for i in self.listaAristas:
+            if (origen == i.origen and destino == i.destino) or (destino == i.origen and origen == i.destino):
+                list.append(i)
+        return list
+
+    def bloquearArista(self, origen, destino):
+        cont = 0
+        for i in self.listaAristas:
+            if i.destino == destino:
+                cont += 1
+        if cont >= 2:
+            for j in self.obtenerArista(origen, destino):
+                index = self.listaAristas.index(j)
+                self.listaAristasB.append(self.listaAristas.pop(index))
+        else:
+            return False
 
     def verificarExisteA(self, origen, destino, lista):
         for i in range(len(lista)):
@@ -66,6 +94,14 @@ class Grafo:
             if i.getOrigen() == origen and i.getDestino() == destino:
                 return False
         return True
+
+    def obtenerAristas(self):
+        for i in self.listaAristas:
+            print(f"{i.origen} > {i.destino} - {i.peso}")
+
+    def obtenerAristasB(self):
+        for i in self.listaAristasB:
+            print(f"{i.origen} > {i.destino} - {i.peso}")
 
     def mostrarVyA(self):
         print(f"VERTICE..........ADYACENCIAS")
@@ -280,3 +316,19 @@ class Grafo:
                 if (elemento.getOrigen() == copiaAristas[i].getDestino() and elemento.getDestino() == copiaAristas[i].getOrigen()):
                     copiaAristas.pop(i)
                     break
+
+    def rProfrundidad(self, origen):
+        if origen in self.visitadosCP:
+            return
+        else:
+            vertice = self.obtenerOrigen(origen)
+            if vertice != None:
+                self.visitadosCP.append(origen)
+                for i in vertice.getListaAdyacentes():
+                    self.rProfrundidad(i)
+
+    def rAnchura(self, origen):
+        if origen in self.visitadosCA:
+            return
+        else:
+            pass

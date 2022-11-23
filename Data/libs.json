@@ -1,0 +1,282 @@
+{
+  "ubicaciones": {
+    "Gadner": [80, 100],
+    "Euler": [540, 60],
+    "Konisberg": [1000, 90],
+    "Voronoi": [200, 150],
+    "Gauss": [700, 150],
+    "Richter": [900, 250],
+    "Fibonacci": [80, 350],
+    "Fahrenheit": [600, 350],
+    "Hilbert": [200, 450],
+    "Celsius": [1000, 450],
+    "Casita": [400, 250]
+  },
+
+  "vertices": [
+    "Gadner",
+    "Euler",
+    "Konisberg",
+    "Voronoi",
+    "Gauss",
+    "Richter",
+    "Fibonacci",
+    "Fahrenheit",
+    "Hilbert",
+    "Celsius",
+    "Casita"
+  ],
+
+  "aristas": {
+    "1": {
+      "from": "Gadner",
+      "to": "Euler",
+      "data": 415
+    },
+    "2": {
+      "from": "Gadner",
+      "to": "Fibonacci",
+      "data": 310
+    },
+    "3": {
+      "from": "Gadner",
+      "to": "Voronoi",
+      "data": 170
+    },
+
+    "4": {
+      "from": "Euler",
+      "to": "Gadner",
+      "data": 415
+    },
+    "5": {
+      "from": "Euler",
+      "to": "Voronoi",
+      "data": 317
+    },
+    "6": {
+      "from": "Euler",
+      "to": "Casita",
+      "data": 330
+    },
+    "7": {
+      "from": "Euler",
+      "to": "Gauss",
+      "data": 230
+    },
+    "8": {
+      "from": "Euler",
+      "to": "Konisberg",
+      "data": 300
+    },
+
+    "9": {
+      "from": "Konisberg",
+      "to": "Euler",
+      "data": 300
+    },
+    "10": {
+      "from": "Konisberg",
+      "to": "Gauss",
+      "data": 275
+    },
+    "11": {
+      "from": "Konisberg",
+      "to": "Richter",
+      "data": 225
+    },
+    "12": {
+      "from": "Konisberg",
+      "to": "Celsius",
+      "data": 450
+    },
+
+    "13": {
+      "from": "Celsius",
+      "to": "Konisberg",
+      "data": 450
+    },
+    "14": {
+      "from": "Celsius",
+      "to": "Richter",
+      "data": 280
+    },
+    "15": {
+      "from": "Celsius",
+      "to": "Fahrenheit",
+      "data": 255
+    },
+    "16": {
+      "from": "Celsius",
+      "to": "Hilbert",
+      "data": 312
+    },
+
+    "17": {
+      "from": "Hilbert",
+      "to": "Celsius",
+      "data": 312
+    },
+    "18": {
+      "from": "Hilbert",
+      "to": "Fahrenheit",
+      "data": 230
+    },
+    "19": {
+      "from": "Hilbert",
+      "to": "Fibonacci",
+      "data": 250
+    },
+
+    "20": {
+      "from": "Fibonacci",
+      "to": "Hilbert",
+      "data": 250
+    },
+    "21": {
+      "from": "Fibonacci",
+      "to": "Fahrenheit",
+      "data": 450
+    },
+    "22": {
+      "from": "Fibonacci",
+      "to": "Casita",
+      "data": 345
+    },
+    "23": {
+      "from": "Fibonacci",
+      "to": "Voronoi",
+      "data": 299
+    },
+    "24": {
+      "from": "Fibonacci",
+      "to": "Gadner",
+      "data": 310
+    },
+
+    "25": {
+      "from": "Voronoi",
+      "to": "Fibonacci",
+      "data": 299
+    },
+    "26": {
+      "from": "Voronoi",
+      "to": "Gadner",
+      "data": 170
+    },
+    "27": {
+      "from": "Voronoi",
+      "to": "Euler",
+      "data": 317
+    },
+    "28": {
+      "from": "Voronoi",
+      "to": "Casita",
+      "data": 190
+    },
+
+    "29": {
+      "from": "Gauss",
+      "to": "Euler",
+      "data": 230
+    },
+    "30": {
+      "from": "Gauss",
+      "to": "Konisberg",
+      "data": 275
+    },
+    "31": {
+      "from": "Gauss",
+      "to": "Richter",
+      "data": 198
+    },
+    "32": {
+      "from": "Gauss",
+      "to": "Fahrenheit",
+      "data": 314
+    },
+    "33": {
+      "from": "Gauss",
+      "to": "Casita",
+      "data": 180
+    },
+
+    "34": {
+      "from": "Richter",
+      "to": "Gauss",
+      "data": 198
+    },
+    "35": {
+      "from": "Richter",
+      "to": "Konisberg",
+      "data": 225
+    },
+    "36": {
+      "from": "Richter",
+      "to": "Celsius",
+      "data": 280
+    },
+    "37": {
+      "from": "Richter",
+      "to": "Fahrenheit",
+      "data": 267
+    },
+
+    "38": {
+      "from": "Fahrenheit",
+      "to": "Richter",
+      "data": 267
+    },
+    "39": {
+      "from": "Fahrenheit",
+      "to": "Celsius",
+      "data": 255
+    },
+    "40": {
+      "from": "Fahrenheit",
+      "to": "Hilbert",
+      "data": 230
+    },
+    "41": {
+      "from": "Fahrenheit",
+      "to": "Fibonacci",
+      "data": 450
+    },
+    "42": {
+      "from": "Fahrenheit",
+      "to": "Casita",
+      "data": 180
+    },
+    "43": {
+      "from": "Fahrenheit",
+      "to": "Gauss",
+      "data": 314
+    },
+
+    "44": {
+      "from": "Casita",
+      "to": "Euler",
+      "data": 330
+    },
+    "45": {
+      "from": "Casita",
+      "to": "Gauss",
+      "data": 180
+    },
+    "46": {
+      "from": "Casita",
+      "to": "Fahrenheit",
+      "data": 180
+    },
+    "47": {
+      "from": "Casita",
+      "to": "Fibonacci",
+      "data": 345
+    },
+    "48": {
+      "from": "Casita",
+      "to": "Voronoi",
+      "data": 190
+    }
+  }
+}
