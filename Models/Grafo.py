@@ -1,6 +1,7 @@
 from Models.Arista import *
 from Models.Vertice import *
 from copy import *
+from tkinter import messagebox as MB
 
 
 class Grafo:
@@ -63,8 +64,9 @@ class Grafo:
             for j in self.obtenerArista(origen, destino):
                 index = self.listaAristas.index(j)
                 self.listaAristasB.append(self.listaAristas.pop(index))
+            return True
         else:
-            return False
+            MB.showinfo("ERROR", "El destino no contiene rutas de acceso")
 
     def verificarExisteA(self, origen, destino, lista):
         for i in range(len(lista)):

@@ -58,8 +58,7 @@ class Interfaz():
         self.close = True
 
     def obstruirFn(self, origen, destino):
-        if self.grafo.bloquearArista(origen.get(), destino.get()):
-            MB.showinfo("ERROR", "El destino no contiene rutas alternas")
+        self.grafo.bloquearArista(origen.get(), destino.get())
         self.grafo.obtenerAristas()
         print("///")
         self.grafo.obtenerAristasB()
