@@ -59,9 +59,7 @@ class Interfaz():
 
     def obstruirFn(self, origen, destino):
         self.grafo.bloquearArista(origen.get(), destino.get())
-        self.grafo.obtenerAristas()
-        print("///")
-        self.grafo.obtenerAristasB()
+        self.grafo.obtenerRecorridos(origen.get())
 
     def pulsarBotones(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == True:

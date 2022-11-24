@@ -57,17 +57,35 @@ class Grafo:
         return list
 
     def bloquearArista(self, origen, destino):
-        cont = 0
-        for i in self.listaAristas:
-            if i.destino == destino:
-                cont += 1
-        if cont >= 2:
-            for j in self.obtenerArista(origen, destino):
-                index = self.listaAristas.index(j)
-                self.listaAristasB.append(self.listaAristas.pop(index))
+        x = False
+        if origen == destino:
+            return MB.showerror("ERROR", "Origen y Destino no pueden ser iguales")
+        for i in self.listaAristasB:
+            if i.origen == origen and i.destino == destino:
+                return MB.showerror("ERROR", "La ruta ya está bloqueada")
+        for j in self.obtenerArista(origen, destino):
+            index = self.listaAristas.index(j)
+            self.listaAristasB.append(self.listaAristas.pop(index))
+            self.obtenerOrigen(
+                j.origen).listaAdyacentes.remove(j.destino)
+            if not self.verificarCamino(origen, destino):
+                self.listaAristas.append(self.listaAristasB.pop())
+                self.obtenerOrigen(j.origen).listaAdyacentes.append(j.destino)
+                return MB.showerror("ERROR", "Esta ruta no se puede bloquear")
+            x = True
+        if x == True:
+            return MB.showinfo("ESTADO", f"Ruta entre {origen} y {destino} BLOQUEADA")
+        return MB.showerror("ERROR", f"No existe una ruta entre {origen} y {destino}")
+
+    def verificarCamino(self, origen, destino):
+        self.visitadosCP.clear()
+        #print("VISITADOS ORIGINAL:", self.visitadosCP)
+        self.rProfundidad(origen)
+        #print("VISITADOS MODIFICADO: ", self.visitadosCP)
+        #print(origen, destino)
+        if destino in self.visitadosCP and origen in self.visitadosCP:
             return True
-        else:
-            MB.showinfo("ERROR", "El destino no contiene rutas de acceso")
+        return False
 
     def verificarExisteA(self, origen, destino, lista):
         for i in range(len(lista)):
@@ -320,7 +338,7 @@ class Grafo:
                     copiaAristas.pop(i)
                     break
 
-    def rProfrundidad(self, origen):
+    def rProfundidad(self, origen):
         if origen in self.visitadosCP:
             return
         else:
@@ -328,18 +346,24 @@ class Grafo:
             if vertice != None:
                 self.visitadosCP.append(origen)
                 for i in vertice.getListaAdyacentes():
-                    self.rProfrundidad(i)
+                    self.rProfundidad(i)
 
     def rAnchura(self, origen):
         cola = deque()
+        ruta = []
         vertice = self.obtenerOrigen(origen)
         if vertice != None:
             cola.append(vertice)
-            self.visitadosCA(origen)
+            self.visitadosCA.append(origen)
+            ruta.append(vertice)
             while cola:
                 elemento = cola.popleft()
+                ruta.append(elemento)
                 for dato in elemento.listaAdyacentes:
                     if not dato in self.visitadosCA:
                         vertice = self.obtenerOrigen(dato)
                         cola.append(vertice)
                         self.visitadosCA.append(dato)
+
+    def viajeAnchura(self, origen='Casita'):
+        self.visitadosCP.clear()
