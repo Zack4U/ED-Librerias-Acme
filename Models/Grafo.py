@@ -1,3 +1,4 @@
+from collections import deque
 from Models.Arista import *
 from Models.Vertice import *
 from copy import *
@@ -330,7 +331,15 @@ class Grafo:
                     self.rProfrundidad(i)
 
     def rAnchura(self, origen):
-        if origen in self.visitadosCA:
-            return
-        else:
-            pass
+        cola = deque()
+        vertice = self.obtenerOrigen(origen)
+        if vertice != None:
+            cola.append(vertice)
+            self.visitadosCA(origen)
+            while cola:
+                elemento = cola.popleft()
+                for dato in elemento.listaAdyacentes:
+                    if not dato in self.visitadosCA:
+                        vertice = self.obtenerOrigen(dato)
+                        cola.append(vertice)
+                        self.visitadosCA.append(dato)

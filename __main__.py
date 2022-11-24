@@ -8,13 +8,18 @@ def main():
     game()
 
 
+def events(event):
+    if event.type == pg.QUIT:
+        sys.exit()
+
+
 def game():
 
     libs = Librerias()
     gui = Interfaz(libs.grafo)
-    bg = pygame.image.load("Resources\mapa.jpg")
+    bg = pygame.image.load("Resources/mapa.jpg")
     bg = pygame.transform.scale(bg, (1280, 720))
-    icon = pygame.image.load('Resources\icon.png')
+    icon = pygame.image.load('Resources/icon.png')
 
     pg.init()
 
@@ -43,11 +48,6 @@ def game():
 
         pg.display.flip()
         clock.tick(144)
-
-
-def events(event):
-    if event.type == pg.QUIT:
-        sys.exit()
 
 
 if __name__ == '__main__':

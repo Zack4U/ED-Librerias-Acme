@@ -11,11 +11,11 @@ class Librerias():
 
         self.grafo = Grafo()
 
-        self.libreria = pygame.image.load("Resources\libreria.png")
+        self.libreria = pygame.image.load("Resources/libreria.png")
         self.libreria = pygame.transform.scale(self.libreria, (100, 70))
-        self.casita = pygame.image.load("Resources\casa.png")
+        self.casita = pygame.image.load("Resources/casa.png")
         self.casita = pygame.transform.scale(self.casita, (100, 70))
-        self.mensajero = pygame.image.load("Resources\mensajero.png")
+        self.mensajero = pygame.image.load("Resources/mensajero.png")
         self.mensajero = pygame.transform.scale(self.mensajero, (100, 70))
 
         self.velocidad = 1
@@ -26,7 +26,7 @@ class Librerias():
         self.crearMensajero()
 
     def leerJson(self):
-        with open("Data\libs.json", "r") as libsJson:
+        with open("Data/libs.json", "r") as libsJson:
             libs = json.load(libsJson)
         libsJson.close()
         self.vertices = libs['vertices']
