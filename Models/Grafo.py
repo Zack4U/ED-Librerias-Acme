@@ -1,4 +1,5 @@
-from collections import deque
+from collections import defaultdict, deque
+from queue import PriorityQueue
 from Models.Arista import *
 from Models.Vertice import *
 from copy import *
@@ -15,6 +16,9 @@ class Grafo:
         self.vistadosCKruskal = []
         self.repetidos = 0
         self.listaAristasB = []
+        self.visitadosDijkstra = []
+        self.edges = defaultdict(list)
+        self.weights = {}
 
     def getListaVertices(self):
         list = []
@@ -39,6 +43,10 @@ class Grafo:
         if not self.verificarExisteA(origen, destino, self.listaAristas):
             if self.verificarExisteV(origen, self.listaVertices) and self.verificarExisteV(destino, self.listaVertices):
                 self.listaAristas.append(Arista(origen, destino, peso))
+                self.edges[origen].append(destino)
+                self.edges[destino].append(origen)
+                self.weights[(origen, destino)] = peso
+                self.weights[(destino, origen)] = peso
                 if not destino in self.obtenerOrigen(origen).listaAdyacentes:
                     self.obtenerOrigen(origen).listaAdyacentes.append(destino)
                 if not origen in self.obtenerOrigen(destino).listaAdyacentes:
@@ -365,5 +373,42 @@ class Grafo:
                         cola.append(vertice)
                         self.visitadosCA.append(dato)
 
-    def viajeAnchura(self, origen='Casita'):
-        self.visitadosCP.clear()
+    def dijsktra(graph, initial, end):
+        # shortest paths is a dict of nodes
+        # whose value is a tuple of (previous node, weight)
+        shortest_paths = {initial: (None, 0)}
+        current_node = initial
+        visited = set()
+
+        while current_node != end:
+            visited.add(current_node)
+            destinations = graph.edges[current_node]
+            weight_to_current_node = shortest_paths[current_node][1]
+
+            for next_node in destinations:
+                weight = graph.weights[(
+                    current_node, next_node)] + weight_to_current_node
+                if next_node not in shortest_paths:
+                    shortest_paths[next_node] = (current_node, weight)
+                else:
+                    current_shortest_weight = shortest_paths[next_node][1]
+                    if current_shortest_weight > weight:
+                        shortest_paths[next_node] = (current_node, weight)
+
+            next_destinations = {
+                node: shortest_paths[node] for node in shortest_paths if node not in visited}
+            if not next_destinations:
+                return "Route Not Possible"
+            # next node is the destination with the lowest weight
+            current_node = min(next_destinations,
+                               key=lambda k: next_destinations[k][1])
+
+        # Work back through destinations in shortest path
+        path = []
+        while current_node is not None:
+            path.append(current_node)
+            next_node = shortest_paths[current_node][0]
+            current_node = next_node
+        # Reverse path
+        path = path[::-1]
+        return path

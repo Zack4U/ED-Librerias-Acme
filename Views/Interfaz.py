@@ -10,18 +10,21 @@ from Models.Grafo import Grafo
 
 class Interfaz():
 
-    def __init__(self, grafo):
+    def __init__(self, libs):
         self.color_bg = (0, 0, 0)
         self.color_btn = (51, 51, 51)
         self.close = True
 
-        self.grafo = grafo
+        self.libs = libs
+        self.grafo = libs.grafo
 
     def crearInterfaz(self, screen):
         self.crearVentanas((0, 520, 1280, 200), screen)
         self.crearVentanas((1080, 0, 200, 520), screen)
 
         self.obstruirBtn(screen)
+        self.moverProdundidadBtn(screen)
+        self.moverAnchuraBtn(screen)
 
     def crearVentanas(self, rect, screen):
         self.ventana = draw.rect(screen, self.color_bg, rect)
@@ -33,6 +36,16 @@ class Interfaz():
         self.obstruir = Rect((10, 530, 50, 50))
         color = (55, 55, 55)
         self.dibujarBotones(self.obstruir, color, screen)
+
+    def moverProdundidadBtn(self, screen):
+        self.moverProfundidad = Rect((70, 530, 50, 50))
+        color = (55, 55, 55)
+        self.dibujarBotones(self.moverProfundidad, color, screen)
+
+    def moverAnchuraBtn(self, screen):
+        self.moverAnchura = Rect((130, 530, 50, 50))
+        color = (55, 55, 55)
+        self.dibujarBotones(self.moverAnchura, color, screen)
 
     def obstruirPanel(self):
         self.close = False
@@ -59,9 +72,12 @@ class Interfaz():
 
     def obstruirFn(self, origen, destino):
         self.grafo.bloquearArista(origen.get(), destino.get())
-        self.grafo.obtenerRecorridos(origen.get())
 
     def pulsarBotones(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == True:
+            if self.moverProfundidad.collidepoint(mouse.get_pos()) and self.close:
+                self.libs.recorridoProfundidad()
+            if self.moverAnchura.collidepoint(mouse.get_pos()) and self.close:
+                self.libs.recorridoAnchura()
             if self.obstruir.collidepoint(mouse.get_pos()) and self.close:
                 self.obstruirPanel()

@@ -15,8 +15,8 @@ def events(event):
 
 def game():
 
-    libs = Librerias()
-    gui = Interfaz(libs.grafo)
+    libs = Librerias(velocidad)
+    gui = Interfaz(libs)
     bg = pygame.image.load("Resources/mapa.jpg")
     bg = pygame.transform.scale(bg, (1280, 720))
     icon = pygame.image.load('Resources/icon.png')
@@ -51,4 +51,9 @@ def game():
 
 
 if __name__ == '__main__':
+
+    global velocidad
+
+    velocidad = 2
+
     main()

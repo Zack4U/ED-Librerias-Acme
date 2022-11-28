@@ -1,4 +1,6 @@
 import json
+from threading import Thread
+from time import sleep
 import pygame
 from Models.Arista import *
 from Models.Grafo import *
@@ -7,7 +9,7 @@ from Models.Vertice import *
 
 class Librerias():
 
-    def __init__(self):
+    def __init__(self, velocidad):
 
         self.grafo = Grafo()
 
@@ -18,8 +20,10 @@ class Librerias():
         self.mensajero = pygame.image.load("Resources/mensajero.png")
         self.mensajero = pygame.transform.scale(self.mensajero, (100, 70))
 
-        self.velocidad = 1
+        self.velocidad = velocidad
         self.tolerancia = self.velocidad*5+1
+        self.stop = False
+        self.disponible = True
 
         self.leerJson()
         self.crearGrafo()
@@ -96,7 +100,7 @@ class Librerias():
     def monstrarMensajero(self, screen):
         screen.blit(self.mensajero, self.mensajero_rect)
 
-    def moverMensajero(self, ubicacion):
+    def mover(self, ubicacion):
         ubicacion = [ubicacion[0], ubicacion[1]]
         if (self.mensajero_rect.centerx >= ubicacion[0]-self.tolerancia and self.mensajero_rect.centerx <= ubicacion[0]+self.tolerancia
                 and self.mensajero_rect.centery >= ubicacion[1]-self.tolerancia and self.mensajero_rect.centery <= ubicacion[1]+self.tolerancia):
@@ -109,3 +113,42 @@ class Librerias():
             self.mensajero_rect.centery += self.velocidad
         if self.mensajero_rect.centery > ubicacion[1]:
             self.mensajero_rect.centery -= self.velocidad
+
+    def mandarMensajero(self, ruta):
+        if self.stop == False:
+            self.thread = Thread(target=lambda: self.moverMensajero(ruta))
+            self.thread.start()
+
+    def moverMensajero(self, ruta):
+        if self.disponible:
+            self.disponible = False
+            for v in ruta:
+                if self.stop:
+                    return
+                while not (self.stop and v is None):
+                    if v is None:
+                        break
+                    if self.stop:
+                        return
+                    u = self.ubicaciones[v]
+                    if (self.mover(u)):
+                        sleep(1)
+                        break
+                    sleep(0.01)
+            while not self.stop:
+                if self.stop:
+                    return
+                if (self.mover(self.ubicaciones["Casita"])):
+                    break
+                sleep(0.01)
+            self.disponible = True
+
+    def recorridoProfundidad(self):
+        self.grafo.rProfundidad("Casita")
+        r = self.grafo.visitadosCP
+        self.mandarMensajero(r)
+
+    def recorridoAnchura(self):
+        self.grafo.rAnchura("Casita")
+        r = self.grafo.visitadosCA
+        self.mandarMensajero(r)
