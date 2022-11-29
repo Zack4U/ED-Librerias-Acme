@@ -15,8 +15,6 @@ def events(event):
 
 def game():
 
-    libs = Librerias(velocidad)
-    gui = Interfaz(libs)
     bg = pygame.image.load("Resources/mapa.jpg")
     bg = pygame.transform.scale(bg, (1280, 720))
     icon = pygame.image.load('Resources/icon.png')
@@ -29,6 +27,9 @@ def game():
 
     pygame.display.set_caption('Librerias ACME')
     pygame.display.set_icon(icon)
+
+    libs = Librerias(velocidad, screen)
+    gui = Interfaz(libs)
 
     activate = True
 

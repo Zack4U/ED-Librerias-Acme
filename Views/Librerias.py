@@ -9,9 +9,10 @@ from Models.Vertice import *
 
 class Librerias():
 
-    def __init__(self, velocidad):
+    def __init__(self, velocidad, screen):
 
         self.grafo = Grafo()
+        self.screen = screen
 
         self.libreria = pygame.image.load("Resources/libreria.png")
         self.libreria = pygame.transform.scale(self.libreria, (100, 70))
@@ -72,10 +73,12 @@ class Librerias():
             self.dibujarLineas(ruta, screen)
 
     def dibujarLineas(self, ruta, screen):
-        color = (255, 255, 255)
+        color = self.grafo.obtenerArista(ruta.origen, ruta.destino)[0].color
+        color2 = self.grafo.obtenerArista(ruta.origen, ruta.destino)[1].color
+        if color != color2 or color2 != color:
+            color = color2
         start = self.ubicaciones[ruta.getOrigen()]
         end = self.ubicaciones[ruta.getDestino()]
-
         pygame.draw.line(screen, color, (start[0], start[1]), (end[0], end[1]))
 
     def mostrarPesos(self, screen):
@@ -135,13 +138,27 @@ class Librerias():
                         sleep(1)
                         break
                     sleep(0.01)
-            while not self.stop:
+            self.volver(ruta)
+            self.disponible = True
+
+    def volver(self, ruta):
+        ruta = ruta[::-1]
+        ubicacion = ruta[0]
+        ruta = self.grafo.dijsktra(ubicacion, "Casita")
+        print(ruta)
+        for v in ruta:
+            if self.stop:
+                return
+            while not (self.stop and v is None):
+                if v is None:
+                    break
                 if self.stop:
                     return
-                if (self.mover(self.ubicaciones["Casita"])):
+                u = self.ubicaciones[v]
+                if (self.mover(u)):
+                    sleep(1)
                     break
                 sleep(0.01)
-            self.disponible = True
 
     def recorridoProfundidad(self):
         self.grafo.rProfundidad("Casita")
@@ -151,4 +168,51 @@ class Librerias():
     def recorridoAnchura(self):
         self.grafo.rAnchura("Casita")
         r = self.grafo.visitadosCA
-        self.mandarMensajero(r)
+        ruta = []
+        print(r)
+        for i in range(len(r)-1):
+            ini = r[i]
+            end = r[i+1]
+            for i in self.grafo.dijsktra(ini, end):
+                ruta.append(i)
+        self.mandarMensajero(ruta)
+
+    def moverLibreria(self, libreria):
+        print(libreria)
+        ruta = self.grafo.dijsktra("Casita", libreria)
+        print(ruta)
+        self.mandarMensajero(ruta)
+
+    def pintarAristas(self, color, ruta, screen):
+        for r in ruta:
+            self.dibujarLineas(r, screen, color)
+
+    def caminoCorto(self, origen):
+        ruta = self.grafo.Prim(origen)
+        for i in ruta:
+            for j in self.grafo.obtenerArista(i[0], i[1]):
+                j.color = (0, 255, 0)
+
+    def caminoCortoOrigen(self, origen):
+        for v in self.grafo.listaVertices:
+            if v.dato == origen:
+                continue
+            ruta = self.grafo.dijsktra(origen, v.dato)
+            print(f"{origen} a {v.dato} es: {ruta}")
+            for i in range(len(ruta)-1):
+                for j in self.grafo.obtenerArista(ruta[i], ruta[i+1]):
+                    j.color = (0, 255, 0)
+
+    def refrescar(self):
+        for i in self.grafo.listaAristas:
+            i.color = (255, 255, 255)
+
+    def libreriasOrden(self, ruta):
+        r = ruta.split()
+        ruta = []
+        for i in range(len(r)-1):
+            ini = r[i]
+            end = r[i+1]
+            for i in self.grafo.dijsktra(ini, end):
+                ruta.append(i)
+        self.mandarMensajero(ruta)

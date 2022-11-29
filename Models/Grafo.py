@@ -4,6 +4,7 @@ from Models.Arista import *
 from Models.Vertice import *
 from copy import *
 from tkinter import messagebox as MB
+import networkx as nx
 
 
 class Grafo:
@@ -266,7 +267,7 @@ class Grafo:
 
         return None  # es la menor
 
-    def Prim(self):
+    def Prim(self, origen):
         copiaAristas = copy(self.listaAristas)
         conjunto = []  # * Vertices que voy visitando
         aristasTemp = []  # * Posibles candidatos, aristas en amarillo
@@ -276,7 +277,7 @@ class Grafo:
         menor = copiaAristas[0]
         # * si es dirigido, lo convierto a dirigido
         self.dirigido(copiaAristas)
-        conjunto.append(menor.getOrigen())  # * vertice para empezar
+        conjunto.append(origen)  # * vertice para empezar
 
         terminado = False
         while (not terminado):
@@ -289,7 +290,7 @@ class Grafo:
         lista = []
         for i in range(len(aristasPrim)):
             lista.append([aristasPrim[i].getOrigen(),
-                         aristasPrim[i].getDestino()])
+                         aristasPrim[i].getDestino(), aristasPrim[i].getPeso()])
         print(lista)
         return lista
 
