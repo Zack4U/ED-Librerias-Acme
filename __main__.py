@@ -21,7 +21,7 @@ def game():
 
     pg.init()
 
-    size = width, height = 1280, 720
+    size = width, height = 1080, 720
     screen = pg.display.set_mode(size)
     clock = pg.time.Clock()
 
