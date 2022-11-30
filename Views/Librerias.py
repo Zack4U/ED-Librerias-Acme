@@ -163,18 +163,23 @@ class Librerias():
     def recorridoProfundidad(self):
         self.grafo.rProfundidad("Casita")
         r = self.grafo.visitadosCP
-        self.mandarMensajero(r)
+        ruta = []
+        for i in range(len(r)-1):
+            ini = r[i]
+            end = r[i+1]
+            for j in self.grafo.dijsktra(ini, end):
+                ruta.append(j)
+        self.mandarMensajero(ruta)
 
     def recorridoAnchura(self):
         self.grafo.rAnchura("Casita")
         r = self.grafo.visitadosCA
         ruta = []
-        print(r)
         for i in range(len(r)-1):
             ini = r[i]
             end = r[i+1]
-            for i in self.grafo.dijsktra(ini, end):
-                ruta.append(i)
+            for j in self.grafo.dijsktra(ini, end):
+                ruta.append(j)
         self.mandarMensajero(ruta)
 
     def moverLibreria(self, libreria):

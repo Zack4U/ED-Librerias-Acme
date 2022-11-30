@@ -91,7 +91,7 @@ class Grafo:
 
     def bloquearArista(self, origen, destino):
         x = False
-        error = 0
+
         if origen == destino:
             return MB.showerror("ERROR", "Origen y Destino no pueden ser iguales")
         for i in self.listaAristasB:
@@ -100,21 +100,24 @@ class Grafo:
         for j in self.obtenerArista(origen, destino):
             index = self.listaAristas.index(j)
             indexEdge = self.edges[j.origen].index(j.destino)
-            print(indexEdge)
             self.listaAristasB.append(self.listaAristas.pop(index))
             self.edgesB[j.origen].append(self.edges[j.origen].pop(indexEdge))
             self.obtenerOrigen(
                 j.origen).listaAdyacentes.remove(j.destino)
-            if not self.verificarCamino(origen, destino):
-                self.edges[j.origen].append[self.edgesB.pop(j.origen)]
-                self.listaAristas.append(self.listaAristasB.pop())
-                self.obtenerOrigen(j.origen).listaAdyacentes.append(j.destino)
-                error += 1
             x = True
+
+        if not self.verificarCamino(origen, destino):
+            for j in self.obtenerAristaB(origen, destino):
+                index = self.listaAristasB.index(j)
+                indexEdge = self.edgesB[j.origen].index(j.destino)
+                self.edges[j.origen].append(
+                    self.edgesB[j.origen].pop(indexEdge))
+                self.listaAristas.append(self.listaAristasB.pop(index))
+                self.obtenerOrigen(j.origen).listaAdyacentes.append(j.destino)
+            return MB.showerror("ERROR", "Esta ruta no se puede bloquear")
+
         if x == True:
             return MB.showinfo("ESTADO", f"Ruta entre {origen} y {destino} BLOQUEADA")
-        if error > 0:
-            return MB.showerror("ERROR", "Esta ruta no se puede bloquear")
         return MB.showerror("ERROR", f"No existe una ruta entre {origen} y {destino}")
 
     def liberarArista(self, origen, destino):
@@ -124,6 +127,7 @@ class Grafo:
         for i in self.listaAristas:
             if i.origen == origen and i.destino == destino:
                 return MB.showerror("ERROR", "La ruta ya está LIBERADA")
+        self.verEdges()
         for i in self.obtenerAristaB(origen, destino):
             index = self.listaAristasB.index(i)
             indexEdge = self.edgesB[i.origen].index(i.destino)
